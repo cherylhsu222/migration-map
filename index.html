@@ -1031,6 +1031,9 @@ function buildTimeline() {
     col.className = 'dot-col' + (era.label==='全部'?' all':'');
     col.innerHTML = `<div class="dot"></div><div class="dot-lbl">${era.label}</div>`;
     col.addEventListener('click', () => {
+      // Manual jump always takes control away from autoplay — otherwise the
+      // pending autoplay timer fires later and overrides what the user just picked.
+      stopPlay();
       // Jump to this era: replay all eras up to this one (without animation for previous, with animation for this)
       visiblePlaces = new Set();
       PLACES.forEach(p=>{ const el=mkEls[p.id]; if(el)el.classList.add('gone'); });
