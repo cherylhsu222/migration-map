@@ -23,6 +23,26 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 #gpx-svg{z-index:8}
 #edge-svg{z-index:10}
 #mk-layer{position:absolute;inset:0;z-index:20;pointer-events:none}
+#walker-layer{position:absolute;inset:0;z-index:15;pointer-events:none}
+
+/* ── WALKING FIGURE ── */
+#walker{position:absolute;left:0;top:0;width:34px;height:50px;
+  transform-origin:50% 100%;opacity:0;
+  transition:opacity .3s,left .12s linear,top .12s linear,transform .18s ease-out;
+  pointer-events:none}
+#walker.show{opacity:1}
+#walker svg{display:block;overflow:visible;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6))}
+#walker .w-bob{animation:w-bob .28s ease-in-out infinite alternate}
+#walker .w-leg-l,#walker .w-leg-r,#walker .w-arm-l,#walker .w-arm-r{animation:w-cycle .55s steps(6) infinite}
+#walker .w-leg-l{transform-origin:20px 40px;--a1:24deg;--a2:-26deg}
+#walker .w-leg-r{transform-origin:20px 40px;--a1:-26deg;--a2:24deg}
+#walker .w-arm-l{transform-origin:20px 24px;--a1:-18deg;--a2:20deg}
+#walker .w-arm-r{transform-origin:20px 24px;--a1:20deg;--a2:-18deg}
+@keyframes w-cycle{0%{transform:rotate(var(--a1))}50%{transform:rotate(var(--a2))}100%{transform:rotate(var(--a1))}}
+@keyframes w-bob{from{transform:translateY(0)}to{transform:translateY(-1.4px)}}
+@media (prefers-reduced-motion: reduce){
+  #walker .w-bob,#walker .w-leg-l,#walker .w-leg-r,#walker .w-arm-l,#walker .w-arm-r{animation:none}
+}
 
 /* ── MARKERS ── */
 .mk{position:absolute;transform:translate(-50%,-50%);pointer-events:all;cursor:pointer;transition:opacity .4s}
@@ -223,6 +243,24 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 <svg id="gpx-svg"></svg>
 <svg id="edge-svg"></svg>
 <div id="mk-layer"></div>
+<div id="walker-layer">
+  <div id="walker">
+    <svg viewBox="0 0 40 60" width="34" height="50">
+      <g class="w-bob">
+        <path d="M 12,20 L 12,34 Q 12,38 16,38 L 16,20 Z" fill="#c8a03c" opacity=".55"/>
+        <line x1="13.3" y1="24" x2="15" y2="24" stroke="#0d1117" stroke-width=".6" opacity=".5"/>
+        <line x1="13.3" y1="28" x2="15" y2="28" stroke="#0d1117" stroke-width=".6" opacity=".5"/>
+        <line x1="13.3" y1="32" x2="15" y2="32" stroke="#0d1117" stroke-width=".6" opacity=".5"/>
+        <g class="w-arm-l"><rect x="18.6" y="24" width="2.6" height="13" rx="1.3" fill="#c8a03c"/></g>
+        <g class="w-leg-l"><rect x="18.7" y="40" width="2.8" height="15" rx="1.3" fill="#c8a03c"/></g>
+        <g class="w-leg-r"><rect x="18.7" y="40" width="2.8" height="15" rx="1.3" fill="#c8a03c"/></g>
+        <path d="M17,22 Q14,30 17,40 L23,40 Q25,30 22,22 Z" fill="#c8a03c"/>
+        <g class="w-arm-r"><rect x="18.6" y="24" width="2.6" height="13" rx="1.3" fill="#c8a03c"/></g>
+        <circle cx="21" cy="16" r="5" fill="#c8a03c"/>
+      </g>
+    </svg>
+  </div>
+</div>
 
 <!-- Top bar: title only -->
 <div id="topbar">
@@ -686,7 +724,7 @@ async function loadGPXFromGitHub() {
 // ══════════════════════════════════════════════════════
 // GPX ANIMATION ENGINE
 // ══════════════════════════════════════════════════════
-const GPX_DURATION = 5500; // ms
+const GPX_DURATION = 9500; // ms
 let gpxAnim = null;  // { coords, style, startTime, progress }
 let gpxAnimId = null;
 let showAllGPX = false;
@@ -711,6 +749,7 @@ function clearGPXAnim() {
   gpxAnim = null;
   showAllGPX = false;
   document.getElementById('gpx-prog').classList.remove('show');
+  hideWalker();
   drawGPXLayer();
 }
 
@@ -788,25 +827,60 @@ function drawGPXPolyline(svg, coords, style, progress) {
   // Bright highlight on top (thinner, no filter, to keep crispness)
   svg.appendChild(mkPoly(style.w * 0.4, style.opacity * 0.55, null));
 
-  // Moving dot at the front tip (only while animating)
+  // Walking figure at the front tip (only while a single route is animating)
   if (progress < 1 && n >= 2) {
-    const [lat,lon] = coords[n-1];
-    const p = map.latLngToContainerPoint([lat,lon]);
-    const r = style.w + 3;
-    // Outer pulse ring
-    const ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    ring.setAttribute('cx', p.x); ring.setAttribute('cy', p.y);
-    ring.setAttribute('r', r + 4); ring.setAttribute('fill', 'none');
-    ring.setAttribute('stroke', style.color); ring.setAttribute('stroke-width', 1.5);
-    ring.setAttribute('opacity', 0.4);
-    svg.appendChild(ring);
-    // Solid dot
-    const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y);
-    dot.setAttribute('r', r); dot.setAttribute('fill', style.color);
-    dot.setAttribute('opacity', 0.95);
-    svg.appendChild(dot);
+    updateWalker(coords, n);
+  } else {
+    hideWalker();
   }
+}
+
+// ══════════════════════════════════════════════════════
+// WALKING FIGURE — persistent DOM layer (not rebuilt each
+// frame like #gpx-svg) so the CSS walk-cycle keeps looping.
+// ══════════════════════════════════════════════════════
+let lastWalkerTilt = 0;
+let lastWalkerFlip = 1;
+
+// Walk backward through the raw GPX points until we've covered a real
+// on-screen chord, not just N points — point density (and current zoom)
+// varies a lot, so a fixed point-count lookback under- or over-smooths.
+function findWalkerChordStart(coords, i2, p2) {
+  const TARGET_PX = 18, MAX_LOOKBACK = 400;
+  let i1 = i2;
+  for (let k = i2 - 1, steps = 0; k >= 0 && steps < MAX_LOOKBACK; k--, steps++) {
+    i1 = k;
+    const p = map.latLngToContainerPoint(coords[k]);
+    if (Math.hypot(p.x - p2.x, p.y - p2.y) >= TARGET_PX) break;
+  }
+  return i1;
+}
+
+function updateWalker(coords, n) {
+  const i2 = Math.max(1, n - 1);
+  const p2 = map.latLngToContainerPoint(coords[i2]);
+  const i1 = findWalkerChordStart(coords, i2, p2);
+  const p1 = map.latLngToContainerPoint(coords[i1]);
+  const dx = p2.x - p1.x, dy = p2.y - p1.y;
+  const dist = Math.hypot(dx, dy);
+
+  if (dist > 6) {
+    const target = Math.max(-40, Math.min(40, Math.atan2(dy, Math.abs(dx) || 0.0001) * 180 / Math.PI));
+    // Only re-face left/right once the sideways motion is clearly meaningful —
+    // otherwise near-vertical stretches flicker the flip back and forth.
+    if (Math.abs(dx) >= 4) lastWalkerFlip = dx < 0 ? -1 : 1;
+    lastWalkerTilt += (target - lastWalkerTilt) * 0.3; // ease toward target heading
+  }
+
+  const el = document.getElementById('walker');
+  el.style.left = p2.x + 'px';
+  el.style.top  = p2.y + 'px';
+  el.style.transform = `translate(-50%,-100%) scaleX(${lastWalkerFlip}) rotate(${lastWalkerTilt.toFixed(1)}deg)`;
+  el.classList.add('show');
+}
+function hideWalker() {
+  const el = document.getElementById('walker');
+  if (el) el.classList.remove('show');
 }
 
 map.on('move zoom', () => { drawGPXLayer(); posMarkers(); });
