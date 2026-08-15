@@ -56,30 +56,30 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 #title-block .sub{font-size:9px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-top:3px}
 
 /* ── INFO CARD (right) ── */
-#info-card{position:absolute;top:14px;right:16px;width:300px;z-index:100;
-  background:var(--surf);border:1px solid var(--border);border-radius:12px;
-  backdrop-filter:blur(18px);overflow:hidden;transform:translateX(320px);
+#info-card{position:absolute;top:14px;right:16px;width:390px;z-index:100;
+  background:var(--surf);border:1px solid var(--border);border-radius:14px;
+  backdrop-filter:blur(18px);overflow:hidden;transform:translateX(410px);
   transition:transform .4s cubic-bezier(.16,1,.3,1)}
 #info-card.open{transform:translateX(0)}
-.ic-head{padding:13px 15px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:8px}
-.ic-badge{padding:2px 8px;border-radius:4px;font-size:9px;letter-spacing:.08em;flex-shrink:0;margin-top:2px}
+.ic-head{padding:19px 22px 15px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px}
+.ic-badge{padding:4px 11px;border-radius:5px;font-size:11.5px;letter-spacing:.08em;flex-shrink:0;margin-top:3px}
 .ic-titles{flex:1}
-.ic-title{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:500;line-height:1.3;margin-bottom:2px}
-.ic-sub{font-size:10px;color:var(--muted)}
-.ic-cls{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 0 0 4px;transition:color .2s}
+.ic-title{font-family:'Noto Serif TC',serif;font-size:23px;font-weight:500;line-height:1.32;margin-bottom:4px;letter-spacing:.01em}
+.ic-sub{font-size:13px;color:var(--muted)}
+.ic-cls{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:0 0 0 4px;transition:color .2s}
 .ic-cls:hover{color:var(--text)}
-.ic-body{padding:12px 15px;max-height:52vh;overflow-y:auto}
+.ic-body{padding:18px 22px;max-height:56vh;overflow-y:auto}
 .ic-body::-webkit-scrollbar{width:3px}.ic-body::-webkit-scrollbar-thumb{background:var(--border)}
-.ic-desc{font-size:12px;line-height:1.85;color:rgba(232,228,220,.80);margin-bottom:10px;text-wrap:pretty}
-.ic-links{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.ic-related-lbl{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.ic-rel-list{display:flex;flex-direction:column;gap:4px}
-.ic-rel-item{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:7px;
-  background:rgba(255,255,255,.03);cursor:pointer;font-size:11px;
+.ic-desc{font-size:16.5px;line-height:1.95;color:rgba(232,228,220,.82);margin-bottom:13px;text-wrap:pretty}
+.ic-links{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+.ic-related-lbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.ic-rel-list{display:flex;flex-direction:column;gap:5px}
+.ic-rel-item{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:8px;
+  background:rgba(255,255,255,.03);cursor:pointer;font-size:13px;
   border:1px solid transparent;transition:background .12s}
 .ic-rel-item:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.08)}
-.ic-rel-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.ic-rel-dir{font-size:9px;color:var(--muted)}
+.ic-rel-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ic-rel-dir{font-size:10.5px;color:var(--muted)}
 
 /* ── GPX PROGRESS BAR ── */
 #gpx-prog{position:absolute;top:70px;left:50%;transform:translateX(-50%);z-index:100;
@@ -90,16 +90,16 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 #gpx-prog-lbl{font-size:9px;color:var(--muted);letter-spacing:.08em}
 
 /* ── FLOATING EVENT LABEL ── */
-#evlabel{position:absolute;left:50%;transform:translateX(-50%);bottom:115px;z-index:95;
-  pointer-events:none;background:rgba(10,14,22,.9);border:1px solid rgba(255,255,255,.12);
-  border-radius:8px;padding:8px 18px;font-size:12px;color:var(--text);
-  max-width:380px;text-align:center;line-height:1.65;letter-spacing:.04em;
+#evlabel{position:absolute;left:50%;transform:translateX(-50%);bottom:138px;z-index:95;
+  pointer-events:none;background:rgba(10,14,22,.92);border:1px solid rgba(200,160,60,.22);
+  border-radius:10px;padding:14px 28px;font-size:17px;color:var(--text);
+  max-width:540px;text-align:center;line-height:1.75;letter-spacing:.03em;
   backdrop-filter:blur(10px);opacity:0;transition:opacity .4s}
 #evlabel.show{opacity:1}
 #evlabel strong{color:var(--gold)}#evlabel em{color:var(--cyan);font-style:normal}
 
 /* ── LEGEND (bottom-left) ── */
-#legend{position:absolute;left:16px;bottom:90px;z-index:100;
+#legend{position:absolute;left:16px;bottom:112px;z-index:100;
   background:var(--surf);border:1px solid var(--border);border-radius:10px;
   padding:10px 13px;backdrop-filter:blur(12px);pointer-events:all}
 .leg-title{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
@@ -110,28 +110,28 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .leg-sep{height:1px;background:var(--border);margin:4px 0}
 
 /* ── TIMELINE (bottom) ── */
-#timeline{position:absolute;bottom:0;left:0;right:0;height:76px;z-index:100;
+#timeline{position:absolute;bottom:0;left:0;right:0;height:98px;z-index:100;
   background:linear-gradient(to top,rgba(8,11,18,0.97) 60%,transparent);
-  display:flex;align-items:center;padding:0 20px;gap:16px}
+  display:flex;align-items:center;padding:0 24px;gap:18px}
 #play-btn{flex-shrink:0;background:rgba(200,160,60,.12);border:1px solid rgba(200,160,60,.4);
-  border-radius:8px;color:var(--gold);cursor:pointer;padding:6px 14px;font-size:12px;
+  border-radius:9px;color:var(--gold);cursor:pointer;padding:11px 22px;font-size:15px;
   font-family:'Noto Sans TC',sans-serif;transition:all .2s;letter-spacing:.06em;white-space:nowrap}
 #play-btn:hover{background:rgba(200,160,60,.22);border-color:rgba(200,160,60,.7)}
 #play-btn.playing{background:rgba(200,160,60,.18);border-color:var(--gold)}
 #reset-btn{flex-shrink:0;background:rgba(255,255,255,.05);border:1px solid var(--border);
-  border-radius:8px;color:var(--muted);cursor:pointer;padding:6px 10px;font-size:11px;
+  border-radius:9px;color:var(--muted);cursor:pointer;padding:11px 16px;font-size:13px;
   font-family:'Noto Sans TC',sans-serif;transition:all .2s;white-space:nowrap}
 #reset-btn:hover{color:var(--text);background:rgba(255,255,255,.09)}
 #dots-wrap{flex:1;position:relative;overflow:hidden}
-#dots-line{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.12);margin-top:-7px}
-#dots-track{display:flex;justify-content:space-between;align-items:flex-start;position:relative;padding-top:4px}
-.dot-col{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1}
-.dot-col .dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.2);
-  border:1.5px solid rgba(255,255,255,.15);transition:all .25s;flex-shrink:0}
+#dots-line{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.12);margin-top:-9px}
+#dots-track{display:flex;justify-content:space-between;align-items:flex-start;position:relative;padding-top:6px}
+.dot-col{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex:1}
+.dot-col .dot{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.2);
+  border:2px solid rgba(255,255,255,.15);transition:all .25s;flex-shrink:0}
 .dot-col:hover .dot{background:rgba(200,160,60,.4);border-color:rgba(200,160,60,.6)}
 .dot-col.active .dot{background:var(--gold);border-color:var(--gold);box-shadow:0 0 8px rgba(200,160,60,.6)}
 .dot-col.passed .dot{background:rgba(200,160,60,.3);border-color:rgba(200,160,60,.4)}
-.dot-col .dot-lbl{font-size:7.5px;color:var(--muted);letter-spacing:.04em;text-align:center;white-space:nowrap;transition:color .2s;line-height:1.2}
+.dot-col .dot-lbl{font-size:9.5px;color:var(--muted);letter-spacing:.04em;text-align:center;white-space:nowrap;transition:color .2s;line-height:1.2}
 .dot-col:hover .dot-lbl,.dot-col.active .dot-lbl{color:var(--gold)}
 .dot-col.passed .dot-lbl{color:rgba(200,160,60,.5)}
 .dot-col.all .dot{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3)}
@@ -158,14 +158,21 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 .leaflet-control-zoom{top:70px!important}
 
 /* ── 資料來源按鈕 & 面板 ── */
-#src-btn{position:absolute;bottom:84px;right:16px;z-index:110;
+#src-btn{position:absolute;bottom:106px;right:16px;z-index:110;
   background:rgba(13,19,30,0.82);border:1px solid rgba(255,255,255,0.13);
   border-radius:7px;color:rgba(232,228,220,.55);font-size:10px;cursor:pointer;
   padding:5px 10px;letter-spacing:.06em;backdrop-filter:blur(10px);
   font-family:'Noto Sans TC',sans-serif;transition:all .2s;white-space:nowrap}
 #src-btn:hover{color:var(--gold);border-color:rgba(200,160,60,.4)}
 
-#src-panel{position:absolute;bottom:84px;right:16px;z-index:120;width:360px;
+#tour-replay-btn{position:absolute;bottom:106px;right:154px;z-index:110;
+  background:rgba(13,19,30,0.82);border:1px solid rgba(255,255,255,0.13);
+  border-radius:7px;color:rgba(232,228,220,.55);font-size:10px;cursor:pointer;
+  padding:5px 10px;letter-spacing:.06em;backdrop-filter:blur(10px);
+  font-family:'Noto Sans TC',sans-serif;transition:all .2s;white-space:nowrap}
+#tour-replay-btn:hover{color:var(--gold);border-color:rgba(200,160,60,.4)}
+
+#src-panel{position:absolute;bottom:106px;right:16px;z-index:120;width:360px;
   background:rgba(10,14,22,.96);border:1px solid rgba(255,255,255,0.1);
   border-radius:12px;backdrop-filter:blur(20px);
   padding:18px 20px;display:none;line-height:1.8}
@@ -184,6 +191,30 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
   color:rgba(232,228,220,.35);cursor:pointer;font-size:13px;transition:color .2s;padding:0}
 #src-panel .sp-close:hover{color:var(--text)}
 #src-panel hr{border:none;border-top:1px solid rgba(255,255,255,.07);margin:10px 0}
+
+/* ── ONBOARDING TOUR ── */
+#tour-overlay{position:fixed;inset:0;z-index:300;display:none}
+#tour-overlay.show{display:block}
+#tour-spot{position:absolute;border-radius:12px;
+  box-shadow:0 0 0 9999px rgba(5,7,12,.82);
+  transition:left .45s cubic-bezier(.16,1,.3,1),top .45s cubic-bezier(.16,1,.3,1),
+    width .45s cubic-bezier(.16,1,.3,1),height .45s cubic-bezier(.16,1,.3,1);
+  pointer-events:none}
+#tour-tip{position:absolute;max-width:360px;background:var(--surf);
+  border:1px solid rgba(200,160,60,.45);border-top:2px solid var(--gold);border-radius:2px 2px 14px 14px;
+  padding:22px 26px;backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.6);
+  transition:left .45s cubic-bezier(.16,1,.3,1),top .45s cubic-bezier(.16,1,.3,1)}
+.tour-step-num{font-family:'Noto Serif TC',serif;font-size:12px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.tour-tip-text{font-size:16.5px;line-height:1.85;color:rgba(232,228,220,.92);margin-bottom:19px}
+.tour-tip-actions{display:flex;justify-content:space-between;align-items:center;gap:12px}
+#tour-skip{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;
+  letter-spacing:.05em;font-family:'Noto Sans TC',sans-serif;padding:4px 0;transition:color .2s}
+#tour-skip:hover{color:var(--text)}
+#tour-next{background:rgba(200,160,60,.15);border:1px solid rgba(200,160,60,.5);color:var(--gold);
+  padding:9px 24px;border-radius:8px;font-size:14px;letter-spacing:.08em;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;transition:all .2s;white-space:nowrap}
+#tour-next:hover{background:rgba(200,160,60,.26);border-color:rgba(200,160,60,.8)}
 </style>
 </head>
 <body>
@@ -252,6 +283,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 
 <!-- 資料來源 & 免責聲明 -->
 <button id="src-btn">ⓘ 資料來源與聲明</button>
+<button id="tour-replay-btn">？ 使用說明</button>
 
 <div id="src-panel">
   <button class="sp-close" id="sp-close">✕</button>
@@ -283,6 +315,19 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
     按播放，見證每一段遷徙的路線逐步展開；<br>點擊地點，展開每一段遷徙的故事與舊地名。</p>
     <div class="i-loading" id="i-loading">載入路線資料中…</div>
     <button class="i-btn" id="i-btn" disabled>進入地圖 →</button>
+  </div>
+</div>
+
+<!-- Onboarding tour -->
+<div id="tour-overlay">
+  <div id="tour-spot"></div>
+  <div id="tour-tip">
+    <div class="tour-step-num" id="tour-step-num"></div>
+    <div class="tour-tip-text" id="tour-tip-text"></div>
+    <div class="tour-tip-actions">
+      <button id="tour-skip">跳過</button>
+      <button id="tour-next">下一步 →</button>
+    </div>
   </div>
 </div>
 
@@ -1022,7 +1067,7 @@ function showEraCard(era) {
   const badge = document.getElementById('ic-badge');
   badge.textContent = era.badge;
   const bc = BADGE_COLORS[era.badge]||'rgba(200,160,60,.8)';
-  badge.style.cssText=`background:${bc}22;color:${bc};border:1px solid ${bc}55;padding:2px 8px;border-radius:4px;font-size:9px`;
+  badge.style.cssText=`background:${bc}22;color:${bc};border:1px solid ${bc}55;padding:4px 11px;border-radius:5px;font-size:11.5px`;
   document.getElementById('info-card').classList.add('open');
 }
 
@@ -1036,12 +1081,12 @@ function showPlaceCard(p) {
   const badge = document.getElementById('ic-badge');
   const bl = {cur:'現址部落',old:'舊部落遺址',rte:'路徑節點',orig:'起源地'}[p.t]||'';
   badge.textContent=bl;
-  badge.style.cssText=`background:${p.color}22;color:${p.color};border:1px solid ${p.color}55;padding:2px 8px;border-radius:4px;font-size:9px`;
+  badge.style.cssText=`background:${p.color}22;color:${p.color};border:1px solid ${p.color}55;padding:4px 11px;border-radius:5px;font-size:11.5px`;
 
   // Links
   const lk = document.getElementById('ic-links'); lk.innerHTML='';
   const mkA=(href,txt,c)=>{const a=document.createElement('a');a.href=href;a.target='_blank';
-    a.style.cssText=`display:inline-flex;align-items:center;padding:4px 10px;border-radius:5px;background:${c}18;border:1px solid ${c}40;color:${c};font-size:10px;text-decoration:none;`;
+    a.style.cssText=`display:inline-flex;align-items:center;padding:6px 13px;border-radius:6px;background:${c}18;border:1px solid ${c}40;color:${c};font-size:12.5px;text-decoration:none;`;
     a.textContent=txt;return a;};
   lk.appendChild(mkA(`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${p.lat},${p.lon}`,'⊙ 街景','#2A9D8F'));
   lk.appendChild(mkA(`https://www.google.com/maps/@${p.lat},${p.lon},400m/data=!3m1!1e3`,'⌖ 衛星','#E9C46A'));
@@ -1092,6 +1137,87 @@ document.getElementById('i-btn').addEventListener('click', () => {
   setTimeout(()=>ov.style.display='none', 700);
   // Show intro era card
   showEraCard(ERAS[0]);
+  if (!localStorage.getItem('nanao_tour_seen')) {
+    setTimeout(startTour, 900);
+  }
+});
+
+// ══════════════════════════════════════════════════════
+// ONBOARDING TOUR — 聚光燈式新手導覽
+// ══════════════════════════════════════════════════════
+const TOUR_STEPS = [
+  { target: () => document.getElementById('play-btn'),
+    text: '點這裡開始播放遷徙動畫，時間軸會自動往下一個時代前進。' },
+  { target: () => document.getElementById('dots-wrap'),
+    text: '點選時間軸上任一圓點，可以直接跳轉到那個年代。' },
+  { target: () => mkEls['瑞岩部落'], showMarker: '瑞岩部落',
+    text: '點擊地圖上的地點標記，可以看故事與舊地名。' },
+  { target: () => document.getElementById('info-card'),
+    text: '點地點後，完整的故事會顯示在這裡。' },
+];
+let tourIdx = 0;
+let tourAddedMarker = false;
+
+function startTour() {
+  tourIdx = 0;
+  document.getElementById('tour-overlay').classList.add('show');
+  showTourStep(0);
+}
+
+function showTourStep(i) {
+  const step = TOUR_STEPS[i];
+  if (step.showMarker && mkEls[step.showMarker] && mkEls[step.showMarker].classList.contains('gone')) {
+    mkEls[step.showMarker].classList.remove('gone');
+    tourAddedMarker = true;
+  }
+  const el = step.target();
+  if (!el) { tourNext(); return; }
+
+  const r = el.getBoundingClientRect();
+  const pad = 10;
+  const spot = document.getElementById('tour-spot');
+  spot.style.left   = (r.left - pad) + 'px';
+  spot.style.top    = (r.top - pad) + 'px';
+  spot.style.width  = (r.width + pad*2) + 'px';
+  spot.style.height = (r.height + pad*2) + 'px';
+
+  document.getElementById('tour-step-num').textContent = `${i+1} / ${TOUR_STEPS.length}`;
+  document.getElementById('tour-tip-text').textContent = step.text;
+  document.getElementById('tour-next').textContent = i === TOUR_STEPS.length-1 ? '完成' : '下一步 →';
+
+  const tip = document.getElementById('tour-tip');
+  tip.style.visibility = 'hidden'; tip.style.display = 'block';
+  const tr = tip.getBoundingClientRect();
+  let top = r.bottom + pad + 14;
+  if (top + tr.height > window.innerHeight - 20) top = r.top - pad - 14 - tr.height;
+  top = Math.max(16, top);
+  let left = r.left + r.width/2 - tr.width/2;
+  left = Math.max(16, Math.min(left, window.innerWidth - tr.width - 16));
+  tip.style.top = top + 'px';
+  tip.style.left = left + 'px';
+  tip.style.visibility = '';
+}
+
+function tourNext() {
+  if (tourIdx >= TOUR_STEPS.length - 1) { endTour(); return; }
+  tourIdx++;
+  showTourStep(tourIdx);
+}
+
+function endTour() {
+  document.getElementById('tour-overlay').classList.remove('show');
+  if (tourAddedMarker && currentEraIdx === -1 && mkEls['瑞岩部落']) {
+    mkEls['瑞岩部落'].classList.add('gone');
+    tourAddedMarker = false;
+  }
+  localStorage.setItem('nanao_tour_seen', '1');
+}
+
+document.getElementById('tour-next').addEventListener('click', tourNext);
+document.getElementById('tour-skip').addEventListener('click', endTour);
+document.getElementById('tour-replay-btn').addEventListener('click', startTour);
+window.addEventListener('resize', () => {
+  if (document.getElementById('tour-overlay').classList.contains('show')) showTourStep(tourIdx);
 });
 
 // ══════════════════════════════════════════════════════
