@@ -109,15 +109,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
 #gpx-prog-fill{height:100%;width:0%;background:var(--gold);border-radius:1px}
 #gpx-prog-lbl{font-size:9px;color:var(--muted);letter-spacing:.08em}
 
-/* ── FLOATING EVENT LABEL ── */
-#evlabel{position:absolute;left:50%;transform:translateX(-50%);bottom:138px;z-index:95;
-  pointer-events:none;background:rgba(10,14,22,.92);border:1px solid rgba(200,160,60,.22);
-  border-radius:10px;padding:14px 28px;font-size:17px;color:var(--text);
-  max-width:540px;text-align:center;line-height:1.75;letter-spacing:.03em;
-  backdrop-filter:blur(10px);opacity:0;transition:opacity .4s}
-#evlabel.show{opacity:1}
-#evlabel strong{color:var(--gold)}#evlabel em{color:var(--cyan);font-style:normal}
-
 /* ── LEGEND (bottom-left) ── */
 #legend{position:absolute;left:16px;bottom:112px;z-index:100;
   background:var(--surf);border:1px solid var(--border);border-radius:10px;
@@ -235,6 +226,58 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
   padding:9px 24px;border-radius:8px;font-size:14px;letter-spacing:.08em;cursor:pointer;
   font-family:'Noto Sans TC',sans-serif;transition:all .2s;white-space:nowrap}
 #tour-next:hover{background:rgba(200,160,60,.26);border-color:rgba(200,160,60,.8)}
+
+/* ── 長輩友善：Aa 大字模式按鈕 ── */
+#a11y-btn{position:absolute;top:14px;right:416px;z-index:150;
+  background:rgba(13,19,30,0.85);border:1px solid rgba(255,255,255,0.15);
+  border-radius:8px;color:rgba(232,228,220,.75);cursor:pointer;
+  padding:8px 15px;font-size:15px;font-weight:500;letter-spacing:.02em;
+  font-family:'Noto Sans TC',sans-serif;backdrop-filter:blur(10px);
+  transition:all .2s;white-space:nowrap;pointer-events:all}
+#a11y-btn:hover{color:var(--gold);border-color:rgba(200,160,60,.4)}
+#a11y-btn.active{background:rgba(200,160,60,.22);border-color:var(--gold);color:var(--gold)}
+
+/* ── 大字模式：放大 UI 文字（地圖上的部落標籤維持原大小，避免密集處重疊） ── */
+body.large-text #a11y-btn{font-size:18px}
+body.large-text #title-block h1{font-size:26px}
+body.large-text #title-block .sub{font-size:13px}
+body.large-text .ic-title{font-size:34px}
+body.large-text .ic-sub{font-size:19px}
+body.large-text .ic-badge{font-size:16px;padding:6px 15px}
+body.large-text .ic-desc{font-size:24px;line-height:1.85}
+body.large-text .ic-related-lbl{font-size:14px}
+body.large-text .ic-rel-item{font-size:18px;padding:12px 15px}
+body.large-text .ic-rel-dir{font-size:14px}
+body.large-text .ic-rel-dot{width:11px;height:11px}
+body.large-text #gpx-prog-lbl{font-size:13px}
+body.large-text .leg-title{font-size:13px}
+body.large-text .leg-item{font-size:16px;gap:10px;margin-bottom:7px}
+body.large-text .leg-dot{width:12px;height:12px}
+body.large-text .leg-diam{width:11px;height:11px}
+body.large-text #play-btn{font-size:22px;padding:15px 30px}
+body.large-text #reset-btn{font-size:19px;padding:15px 24px}
+body.large-text .dot-col .dot{width:19px;height:19px}
+body.large-text .dot-col .dot-lbl{font-size:12.5px}
+/* 地圖上的部落標籤：適度放大但不放到重疊，靠加粗+加強陰影提升可讀性 */
+body.large-text .mk-lbl{font-size:13px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,1),0 0 8px rgba(0,0,0,.9)}
+body.large-text .mk.cur .mk-dot{width:19px!important;height:19px!important}
+body.large-text .mk.orig .mk-dot{width:17px!important;height:17px!important}
+body.large-text .mk.old .mk-dot{width:14px!important;height:14px!important}
+body.large-text .mk.rte .mk-dot{width:11px!important;height:11px!important}
+body.large-text #src-btn,body.large-text #tour-replay-btn{font-size:16px;padding:9px 16px}
+body.large-text #src-panel h3{font-size:18px}
+body.large-text #src-panel .sp-label{font-size:13px}
+body.large-text #src-panel p,body.large-text #src-panel li{font-size:16px}
+body.large-text .tour-step-num{font-size:16px}
+body.large-text .tour-tip-text{font-size:24px}
+body.large-text #tour-skip{font-size:18px}
+body.large-text #tour-next{font-size:20px;padding:13px 32px}
+body.large-text .i-sub{font-size:14px}
+body.large-text .i-title{font-size:44px}
+body.large-text .i-sub2{font-size:16px}
+body.large-text .i-desc{font-size:19px;line-height:1.95}
+body.large-text .i-loading{font-size:14px}
+body.large-text .i-btn{font-size:18px;padding:14px 42px}
 </style>
 </head>
 <body>
@@ -270,6 +313,9 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
   </div>
 </div>
 
+<!-- 長輩友善：大字模式 -->
+<button id="a11y-btn" aria-pressed="false" title="放大介面文字，適合長輩閱讀">Aa 放大文字</button>
+
 <!-- Info card (right) -->
 <div id="info-card">
   <div class="ic-head">
@@ -293,8 +339,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
   <div id="gpx-prog-lbl">路線動畫中</div>
 </div>
 
-<!-- Floating event label -->
-<div id="evlabel"></div>
 
 <!-- Legend -->
 <div id="legend">
@@ -481,7 +525,7 @@ const ERAS = [
     desc:'1910 年代後期至 1920 年代，日本殖民政府利用隘勇線逐步縮小南澳泰雅族的活動範圍，並收繳族人的槍枝。隨著狩獵、防衛的能力受到限制，日本警察也開始勸說族人甚至施壓部落遷移至較容易管理的地區。原本族人熟悉的山林與獵場受到管制，遷離舊部落從原本的選擇，慢慢變成逼不得已的決定。',
     showPlaces:[], edgeIds:[], gpxKey:null, gpxType:null, dark:true, flash:false, },
 
-  { label:'1922', year:'1922 年', badge:'遷村',
+  { label:'澳花', year:'1922 年', badge:'遷村',
     title:'澳花遷村', sub:'莫瑤社 → 澳花村',
     desc:'1922年，莫瑤社的族人離開原本生活在山中的部落，舉社遷往現今的澳花村，莫瑤社也自此廢社。在殖民政府推動部落遷移與集中管理的背景下，族人不得不離開熟悉的山林、家園，在新的地方重新建立聚落。',
     showPlaces:['澳花村'], edgeIds:['e11'],
@@ -597,8 +641,6 @@ const GPX_STYLES = {
 const map = L.map('map', {center:[24.40,121.50], zoom:10, zoomControl:true});
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
   {maxZoom:19, attribution:'© Esri'}).addTo(map);
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-  {maxZoom:19, opacity:.4}).addTo(map);
 
 // ══════════════════════════════════════════════════════
 // GPX DATA + LOADING
@@ -922,7 +964,6 @@ function flashOld() {
 // ERA ENGINE
 // ══════════════════════════════════════════════════════
 let currentEraIdx = -1;
-let evTimer = null;
 let playTimer = null;
 let isPlaying = false;
 
@@ -977,13 +1018,6 @@ function applyEra(idx, animate=true) {
   // Update info card to show era info
   if (!selectedId) showEraCard(era);
 
-  // Event label
-  if (era.event) {
-    const el = document.getElementById('evlabel');
-    el.innerHTML = era.event; el.classList.add('show');
-    if (evTimer) clearTimeout(evTimer);
-    evTimer = setTimeout(()=>el.classList.remove('show'), 4500);
-  }
 }
 
 function resetAll() {
@@ -994,7 +1028,6 @@ function resetAll() {
   showAllGPX = false;
   document.getElementById('dark-ov').classList.remove('on');
   PLACES.forEach(p=>{ const el=mkEls[p.id]; if(el){el.classList.add('gone');el.classList.remove('pop','flash');} });
-  document.getElementById('evlabel').classList.remove('show');
   selectedId = null;
   closeInfoCard();
   drawGPXLayer(); drawEdgeLayer();
@@ -1296,6 +1329,20 @@ srcBtn.addEventListener('click', () => {
 spClose.addEventListener('click', () => {
   srcPanel.classList.remove('open');
   srcBtn.style.display = '';
+});
+
+// 大字模式（長輩友善）toggle
+const a11yBtn = document.getElementById('a11y-btn');
+if (localStorage.getItem('nanao_large_text') === '1') {
+  document.body.classList.add('large-text');
+  a11yBtn.classList.add('active');
+  a11yBtn.setAttribute('aria-pressed', 'true');
+}
+a11yBtn.addEventListener('click', () => {
+  const on = document.body.classList.toggle('large-text');
+  a11yBtn.classList.toggle('active', on);
+  a11yBtn.setAttribute('aria-pressed', String(on));
+  localStorage.setItem('nanao_large_text', on ? '1' : '0');
 });
 </script>
 </body>
