@@ -31,6 +31,9 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-fam
   transition:opacity .3s,left .12s linear,top .12s linear,transform .18s ease-out;
   pointer-events:none}
 #walker.show{opacity:1}
+/* 暫停時小人停下腳步；拖動或縮放地圖時取消位置緩動，讓小人貼在路線上不亂飄 */
+#walker.paused *{animation-play-state:paused!important}
+#walker.snap{transition:opacity .3s}
 #walker svg{display:block;overflow:visible;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6))}
 #walker .w-bob{animation:w-bob .28s ease-in-out infinite alternate}
 #walker .w-leg-l,#walker .w-leg-r,#walker .w-arm-l,#walker .w-arm-r{animation:w-cycle .55s steps(6) infinite}
@@ -779,8 +782,30 @@ function startGPXAnim(key, type) {
     {trunk:'主幹路線', branch:'分支路線', forced:'集團移住路線', return:'尋根返鄉路線'}[type] || '路線';
 }
 
+// 暫停：停在目前進度，小人留在路線中間；繼續：從同一個進度接著走。
+function pauseGPXAnim() {
+  if (!gpxAnim || gpxAnim.progress >= 1 || gpxAnim.paused) return;
+  if (gpxAnimId) { cancelAnimationFrame(gpxAnimId); gpxAnimId = null; }
+  gpxAnim.paused = true;
+  document.getElementById('walker').classList.add('paused');
+}
+
+function resumeGPXAnim() {
+  if (!gpxAnim || !gpxAnim.paused) return false;
+  gpxAnim.paused = false;
+  gpxAnim.startTime = performance.now() - gpxAnim.progress * GPX_DURATION;
+  document.getElementById('walker').classList.remove('paused');
+  gpxAnimId = requestAnimationFrame(gpxTick);
+  return true;
+}
+
+function routeRunning() {
+  return !!(gpxAnim && gpxAnim.progress < 1 && !gpxAnim.paused && gpxAnimId);
+}
+
 function clearGPXAnim() {
   if (gpxAnimId) { cancelAnimationFrame(gpxAnimId); gpxAnimId = null; }
+  document.getElementById('walker').classList.remove('paused');
   gpxAnim = null;
   showAllGPX = false;
   document.getElementById('gpx-prog').classList.remove('show');
@@ -798,6 +823,7 @@ function gpxTick(now) {
   } else {
     gpxAnimId = null;
     document.getElementById('gpx-prog').classList.remove('show');
+    syncPlayBtn();
   }
 }
 
@@ -919,6 +945,8 @@ function hideWalker() {
 }
 
 map.on('move zoom', () => { drawGPXLayer(); posMarkers(); });
+map.on('movestart zoomstart', () => document.getElementById('walker').classList.add('snap'));
+map.on('moveend zoomend', () => document.getElementById('walker').classList.remove('snap'));
 
 // ══════════════════════════════════════════════════════
 // EDGE LAYER — 已移除（僅保留 GPX 路線動畫）
@@ -1044,6 +1072,7 @@ function resetAll() {
   closeInfoCard();
   drawGPXLayer(); drawEdgeLayer();
   updateTimeline(-1);
+  syncPlayBtn();
 }
 
 // ══════════════════════════════════════════════════════
@@ -1066,6 +1095,7 @@ function buildTimeline() {
       clearGPXAnim();
       for (let j=0; j<i; j++) applyEra(j, false);
       applyEra(i, true);
+      syncPlayBtn();
     });
     track.appendChild(col);
   });
@@ -1090,8 +1120,6 @@ const STATIC_HOLD = 2800;  // ms to show non-GPX eras
 
 function startPlay() {
   isPlaying = true;
-  const btn = document.getElementById('play-btn');
-  btn.textContent = '⏸ 暫停'; btn.classList.add('playing');
   let next = currentEraIdx < 0 ? 0 : currentEraIdx + 1;
   if (next >= ERAS.length) {
     visiblePlaces = new Set();
@@ -1105,6 +1133,7 @@ function startPlay() {
   }
   applyEra(next, true);
   scheduleNextPlay(next + 1);
+  syncPlayBtn();
 }
 
 // Wait for current GPX to finish → hold → advance to next era.
@@ -1143,12 +1172,32 @@ function scheduleNextPlay(next) {
 function stopPlay() {
   isPlaying = false;
   if (playTimer !== null) { clearTimeout(playTimer); playTimer = null; }
+  syncPlayBtn();
+}
+
+// 只要自動播放中，或路線正在畫（例如點了時間軸），按鈕就顯示「暫停」。
+function syncPlayBtn() {
   const btn = document.getElementById('play-btn');
-  btn.textContent = '▶ 播放'; btn.classList.remove('playing');
+  const active = isPlaying || routeRunning();
+  btn.textContent = active ? '⏸ 暫停' : '▶ 播放';
+  btn.classList.toggle('playing', active);
 }
 
 document.getElementById('play-btn').addEventListener('click', () => {
-  if (playTimer !== null) { stopPlay(); } else { startPlay(); }
+  if (isPlaying || routeRunning()) {
+    // 暫停：馬上停住，小人留在路線中間
+    stopPlay();
+    pauseGPXAnim();
+    syncPlayBtn();
+  } else if (gpxAnim && gpxAnim.paused) {
+    // 繼續：從停下的地方接著走，走完再自動往下一個時代
+    isPlaying = true;
+    resumeGPXAnim();
+    scheduleNextPlay(currentEraIdx + 1);
+    syncPlayBtn();
+  } else {
+    startPlay();
+  }
 });
 document.getElementById('reset-btn').addEventListener('click', resetAll);
 
